@@ -174,6 +174,13 @@
         .accordion-body {
             background-color: var(--light-color);
         }
+        .carousel-item-multiple {
+            display: flex;
+            justify-content: space-around;
+        }
+        .carousel-item-multiple .card {
+            flex: 0 0 30%;
+        }
     </style>
 </head>
 <body>
@@ -197,9 +204,6 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#work">Our Work</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#adoptable">Adoptable</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#success-stories">Stories</a>
@@ -298,66 +302,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Adoptable Animals Section -->
-    <section id="adoptable" class="py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 mx-auto text-center">
-                    <h2 class="section-title">Adoptable Friends</h2>
-                    <p class="lead text-muted mb-4">Meet some of the wonderful animals waiting for their forever homes.</p>
-                </div>
-            </div>
-            <div id="adoptableCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="row justify-content-center">
-                            <div class="col-md-8 text-center">
-                                <div class="card p-4 shadow-sm h-100">
-                                    <img src="https://placehold.co/600x400/FFA500/FFFFFF?text=Max" class="card-img-top mb-3" alt="Adoptable Dog">
-                                    <h5 class="fw-bold">Max</h5>
-                                    <p class="text-muted">Max is a loving golden retriever mix who loves to play fetch and cuddle.</p>
-                                    <a href="#contact" class="btn btn-primary btn-custom">Adopt Max</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="row justify-content-center">
-                            <div class="col-md-8 text-center">
-                                <div class="card p-4 shadow-sm h-100">
-                                    <img src="https://placehold.co/600x400/007BFF/FFFFFF?text=Luna" class="card-img-top mb-3" alt="Adoptable Cat">
-                                    <h5 class="fw-bold">Luna</h5>
-                                    <p class="text-muted">Luna is a gentle and shy cat who enjoys quiet afternoons and sunbeams.</p>
-                                    <a href="#contact" class="btn btn-primary btn-custom">Adopt Luna</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="row justify-content-center">
-                            <div class="col-md-8 text-center">
-                                <div class="card p-4 shadow-sm h-100">
-                                    <img src="https://placehold.co/600x400/28a745/FFFFFF?text=Thumper" class="card-img-top mb-3" alt="Adoptable Rabbit">
-                                    <h5 class="fw-bold">Thumper</h5>
-                                    <p class="text-muted">Thumper is a curious rabbit who loves fresh carrots and hopping around.</p>
-                                    <a href="#contact" class="btn btn-primary btn-custom">Adopt Thumper</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#adoptableCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#adoptableCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
             </div>
         </div>
     </section>
