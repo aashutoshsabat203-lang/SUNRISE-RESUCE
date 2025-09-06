@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunrise Rescue</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Google Font: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/20G0xG4JzK8S4c14D2m+F0R+rYx0m1T2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --primary-color: #007BFF;
+            --secondary-color: #28a745;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            scroll-behavior: smooth;
+        }
+
+        .navbar {
+            transition: all 0.3s ease;
+            background-color: transparent;
+        }
+        .navbar-scrolled {
+            background-color: rgba(248, 249, 250, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://placehold.co/1920x1080/007BFF/FFFFFF?text=Helping+Hand') center/cover no-repeat;
+            background-size: cover;
+            color: white;
+            padding: 180px 0;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            box-shadow: inset 0 -10px 10px rgba(0, 0, 0, 0.1);
+        }
+        .btn-custom {
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        .btn-secondary:hover {
+            background-color: #1e7e34;
+            border-color: #1e7e34;
+        }
+        .section-title {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+        .card-img-top {
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        .contact-info a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .contact-info a:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+        .form-control {
+            border-radius: 15px;
+            padding: 10px 20px;
+            border: 1px solid #ced4da;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+        }
+        .ai-section .form-control {
+            border-radius: 1rem;
+            min-height: 150px;
+        }
+        #story-output {
+            background-color: var(--white);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            white-space: pre-wrap;
+            min-height: 100px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            border-width: 0.3em;
+        }
+        .image-container {
+            border: 2px dashed #ccc;
+            border-radius: 1rem;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            background-color: var(--white);
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 1rem;
+        }
+        .accordion-button {
+            background-color: white !important;
+            color: var(--dark-color) !important;
+            font-weight: 600;
+            border: none !important;
+            box-shadow: none !important;
+        }
+        .accordion-button:not(.collapsed) {
+            background-color: var(--light-color) !important;
+            color: var(--primary-color) !important;
+        }
+        .accordion-item {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 10px;
+        }
+        .accordion-body {
+            background-color: var(--light-color);
+        }
+    </style>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/20G0xG4JzK8S4c14D2m+F0R+rYx0m1T2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">Sunrise Rescue</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#hero">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#work">Our Work</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#adoptable">Adoptable</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#success-stories">Stories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#faq">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#mission-matcher">Mission Matcher</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#volunteer">Volunteer & Donate</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+        <div class="container">
+            <h1 class="display-4 fw-bold">Sunrise Rescue</h1>
+            <p class="lead fs-5 mb-4" id="hero-tagline">यत्र आशा तत्र उद्धारः — Where there is hope, there is rescue</p>
+            <div class="row justify-content-center mb-3">
+                <div class="col-md-6 col-lg-4">
+                    <div class="input-group mb-3">
+                        <select class="form-select" id="language-select" aria-label="Select language for translation">
+                            <option selected value="en">English</option>
+                            <option value="es">Español</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="hi">हिन्दी</option>
+                            <option value="ja">日本語</option>
+                        </select>
+                        <button id="translate-btn" class="btn btn-secondary">Translate ✨</button>
+                    </div>
+                </div>
+            </div>
+            <div id="translate-loading-spinner" class="text-center" style="display: none;">
+                <div class="spinner-border text-light" role="status">
+                    <span class="visually-hidden">Translating...</span>
+                </div>
+                <p class="text-muted mt-2">Translating...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="section-title">About Us</h2>
+                    <p class="lead text-muted">Sunrise Rescue is a non-profit organization dedicated to providing hope and support to those in need. We believe that every life, human or animal, deserves a second chance. Our mission is to serve communities by providing essential resources, from food and clothing to safe havens for animals. Through our dedicated team of volunteers and the kindness of our donors, we are able to make a tangible difference in the lives of many, embodying the true spirit of compassion and rescue.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Work Section -->
+    <section id="work" class="py-5 bg-soft-gray">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="section-title">Our Work</h2>
+                </div>
+            </div>
+            <div class="row text-center g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 work-card">
+                        <img src="https://placehold.co/600x400/007BFF/FFFFFF?text=Food+Distribution" class="card-img-top" alt="Food Distribution">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Food Distribution</h5>
+                            <p class="card-text text-muted">We organize regular food distribution drives to ensure that no one in our community goes hungry.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 work-card">
+                        <img src="https://placehold.co/600x400/28a745/FFFFFF?text=Clothes+Donation" class="card-img-top" alt="Clothes Donation">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Clothes Donation</h5>
+                            <p class="card-text text-muted">We collect and donate clothes to provide comfort and dignity to individuals and families in need.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 work-card">
+                        <img src="https://placehold.co/600x400/212529/FFFFFF?text=Animal+Rescue" class="card-img-top" alt="Animal+Rescue">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Animal Rescue</h5>
+                            <p class="card-text text-muted">Our team is committed to rescuing and rehabilitating stray and injured animals, giving them a chance at a loving home.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Adoptable Animals Section -->
+    <section id="adoptable" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="section-title">Adoptable Friends</h2>
+                    <p class="lead text-muted mb-4">Meet some of the wonderful animals waiting for their forever homes.</p>
+                </div>
+            </div>
+            <div id="adoptableCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="row justify-content-center">
+                            <div class="col-md-8 text-center">
+                                <div class="card p-4 shadow-sm h-100">
+                                    <img src="https://placehold.co/600x400/FFA500/FFFFFF?text=Max" class="card-img-top mb-3" alt="Adoptable Dog">
+                                    <h5 class="fw-bold">Max</h5>
+                                    <p class="text-muted">Max is a loving golden retriever mix who loves to play fetch and cuddle.</p>
+                                    <a href="#contact" class="btn btn-primary btn-custom">Adopt Max</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="row justify-content-center">
+                            <div class="col-md-8 text-center">
+                                <div class="card p-4 shadow-sm h-100">
+                                    <img src="https://placehold.co/600x400/007BFF/FFFFFF?text=Luna" class="card-img-top mb-3" alt="Adoptable Cat">
+                                    <h5 class="fw-bold">Luna</h5>
+                                    <p class="text-muted">Luna is a gentle and shy cat who enjoys quiet afternoons and sunbeams.</p>
+                                    <a href="#contact" class="btn btn-primary btn-custom">Adopt Luna</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="row justify-content-center">
+                            <div class="col-md-8 text-center">
+                                <div class="card p-4 shadow-sm h-100">
+                                    <img src="https://placehold.co/600x400/28a745/FFFFFF?text=Thumper" class="card-img-top mb-3" alt="Adoptable Rabbit">
+                                    <h5 class="fw-bold">Thumper</h5>
+                                    <p class="text-muted">Thumper is a curious rabbit who loves fresh carrots and hopping around.</p>
+                                    <a href="#contact" class="btn btn-primary btn-custom">Adopt Thumper</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#adoptableCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#adoptableCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Stories Section -->
+    <section id="success-stories" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="section-title">Success Stories</h2>
+                </div>
+            </div>
+            <div id="storiesCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-10">
+                                <div class="card p-4 shadow-sm story-card">
+                                    <p class="card-text text-muted">"A small kitten, found abandoned in a box, was nursed back to health by our team. Today, it has a loving family and a new name, Leo. His playful spirit reminds us why we do what we do."</p>
+                                    <button class="btn btn-sm btn-outline-primary mt-2 listen-btn" style="border-radius: 50px;"><i class="fas fa-volume-up"></i> Listen</button>
+                                    <audio style="display: none;"></audio>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-10">
+                                <div class="card p-4 shadow-sm story-card">
+                                    <p class="card-text text-muted">"Thanks to a kind donor, we were able to provide blankets and warm clothes to a family displaced by a recent fire. Their gratitude was a powerful reminder of the hope we bring to the community."</p>
+                                    <button class="btn btn-sm btn-outline-primary mt-2 listen-btn" style="border-radius: 50px;"><i class="fas fa-volume-up"></i> Listen</button>
+                                    <audio style="display: none;"></audio>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-10">
+                                <div class="card p-4 shadow-sm story-card">
+                                    <p class="card-text text-muted">"Our team rescued a dog from a storm, who was scared and alone. Today, it has a forever home with a happy family, and is a loyal and loving companion."</p>
+                                    <button class="btn btn-sm btn-outline-primary mt-2 listen-btn" style="border-radius: 50px;"><i class="fas fa-volume-up"></i> Listen</button>
+                                    <audio style="display: none;"></audio>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#storiesCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#storiesCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-5 bg-soft-gray">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="section-title">Frequently Asked Questions</h2>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                    How can I volunteer?
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">
+                                    You can volunteer by filling out the contact form on our website. Our volunteer coordinator will then reach out to you with more information on available opportunities and how you can help.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    What types of donations do you accept?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">
+                                    We gratefully accept both monetary donations and in-kind donations such as food, clothing, and pet supplies. Every contribution, big or small, helps us continue our mission.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    Are you a non-profit organization?
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">
+                                    Yes, Sunrise Rescue is a registered non-profit organization. All donations are tax-deductible to the full extent of the law.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Matcher Section -->
+    <section id="mission-matcher" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="section-title">🤝 Find Your Mission</h2>
+                    <p class="lead text-muted mb-4">Tell us a little about your interests and we'll suggest the perfect way for you to help.</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <textarea class="form-control" id="interests-prompt" rows="4" placeholder="e.g., I love animals and spending time outdoors."></textarea>
+                    </div>
+                    <div class="d-grid mb-4">
+                        <button id="match-btn" class="btn btn-primary btn-custom">Find My Mission</button>
+                    </div>
+                    <div id="matcher-loading-spinner" class="text-center" style="display: none;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Finding your mission...</span>
+                        </div>
+                        <p class="text-muted mt-2">Finding your perfect mission...</p>
+                    </div>
+                    <div id="match-result" class="card p-4 shadow-sm" style="display: none;">
+                        <h5 class="fw-bold mb-3">Your Mission:</h5>
+                        <p id="match-text" class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Volunteer & Donate Section -->
+    <section id="volunteer" class="py-5 text-center text-white" style="background-color: var(--primary-color);">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="fw-bold mb-4">Make a Difference Today</h2>
+                    <p class="lead mb-4">Your support helps us continue our mission. Join us and be a part of the change.</p>
+                    <a href="#contact" class="btn btn-secondary btn-custom me-2">Volunteer Now</a>
+                    <a href="#contact" class="btn btn-light btn-custom">Donate</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Story Generator Section -->
+    <section id="gemini-stories" class="py-5 bg-soft-gray ai-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="section-title">✨ AI-Powered Story Generation ✨</h2>
+                    <p class="lead text-muted mb-4">Generate a quick draft for a success story or testimonial. Just enter a few keywords below!</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <textarea class="form-control" id="story-prompt" rows="5" placeholder="e.g., rescued a stray dog named Buddy, found a forever home, happy family."></textarea>
+                    </div>
+                    <div class="d-grid mb-4">
+                        <button id="generate-btn" class="btn btn-primary btn-custom">Generate Story ✨</button>
+                    </div>
+                    <div id="loading-spinner" class="text-center" style="display: none;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Generating story...</span>
+                        </div>
+                        <p class="text-muted mt-2">Generating story...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Image Generator Section -->
+    <section id="gemini-images" class="py-5 ai-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="section-title">🖼️ AI-Powered Image Generation 🖼️</h2>
+                    <p class="lead text-muted mb-4">Describe the image you want to create and click generate!</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="image-prompt" placeholder="e.g., A happy dog playing in a park, digital art style" style="border-radius: 50px; padding: 10px 20px;">
+                    </div>
+                    <div class="d-grid mb-4">
+                        <button id="generate-image-btn" class="btn btn-secondary btn-custom">Generate Image 🖼️</button>
+                    </div>
+                    <div id="image-loading-spinner" class="text-center" style="display: none;">
+                        <div class="spinner-border text-secondary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="text-muted mt-2">Generating image...</p>
+                    </div>
+                    <div class="image-container" id="image-output-container">
+                        <p class="text-muted">Your generated image will appear here.</p>
+                        <img id="generated-image" style="display: none;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5 bg-soft-gray">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="section-title">Contact Us</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <div class="contact-info text-center">
+                        <h5 class="fw-bold">Contact Info</h5>
+                        <p>Instagram: <a href="https://www.instagram.com/sunrise._.rescue" target="_blank" class="text-decoration-none">sunrise._.rescue</a></p>
+                        <p>Phone: <a href="tel:7038764613">7038764613</a> / <a href="tel:7057582471">7057582471</a></p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <form>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" placeholder="Your Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" class="form-control" placeholder="Your Email" required>
+                        </div>
+                        <div class="mb-3">
+                            <textarea class="form-control" rows="5" placeholder="Your Message" required></textarea>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-custom">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Subscription Section -->
+    <section id="newsletter" class="py-5 text-center text-white" style="background-color: var(--dark-color);">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="fw-bold mb-3">Join Our Newsletter</h2>
+                    <p class="lead mb-4">Stay updated on our events, success stories, and how you can help.</p>
+                    <form class="d-flex justify-content-center">
+                        <div class="input-group" style="max-width: 500px;">
+                            <input type="email" class="form-control" placeholder="Your Email Address" aria-label="Your Email Address" required>
+                            <button class="btn btn-primary btn-custom" type="submit">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3">
+        <p class="mb-0">&copy; 2025 Sunrise Rescue. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Helper function to convert base64 to ArrayBuffer
+        function base64ToArrayBuffer(base64) {
+            const binaryString = atob(base64);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        // Helper function to create WAV audio from PCM data
+        function pcmToWav(pcmData, sampleRate) {
+            const dataLength = pcmData.length * 2;
+            const buffer = new ArrayBuffer(44 + dataLength);
+            const view = new DataView(buffer);
+
+            // RIFF identifier
+            writeString(view, 0, 'RIFF');
+            // file length
+            view.setUint32(4, 36 + dataLength, true);
+            // RIFF type
+            writeString(view, 8, 'WAVE');
+            // format chunk identifier
+            writeString(view, 12, 'fmt ');
+            // format chunk length
+            view.setUint32(16, 16, true);
+            // sample format (1 = PCM)
+            view.setUint16(20, 1, true);
+            // channel count
+            view.setUint16(22, 1, true);
+            // sample rate
+            view.setUint32(24, sampleRate, true);
+            // byte rate (sample rate * block align)
+            view.setUint32(28, sampleRate * 2, true);
+            // block align (channel count * bytes per sample)
+            view.setUint16(32, 2, true);
+            // bits per sample
+            view.setUint16(34, 16, true);
+            // data chunk identifier
+            writeString(view, 36, 'data');
+            // data chunk length
+            view.setUint32(40, dataLength, true);
+
+            // Write PCM data
+            for (let i = 0; i < pcmData.length; i++) {
+                view.setInt16(44 + i * 2, pcmData[i], true);
+            }
+
+            return new Blob([view], { type: 'audio/wav' });
+        }
+
+        function writeString(view, offset, string) {
+            for (let i = 0; i < string.length; i++) {
+                view.setUint8(offset + i, string.charCodeAt(i));
+            }
+        }
+
+        // Gemini API integration for story generation
+        document.getElementById('generate-btn').addEventListener('click', async () => {
+            const prompt = document.getElementById('story-prompt').value;
+            const storiesContainer = document.getElementById('stories-container');
+            const loadingSpinner = document.getElementById('loading-spinner');
+
+            if (!prompt) {
+                const errorMessage = document.createElement('div');
+                errorMessage.classList.add('alert', 'alert-danger');
+                errorMessage.textContent = 'Please enter some keywords to generate a story.';
+                storiesContainer.prepend(errorMessage);
+                return;
+            }
+
+            // Show loading spinner
+            loadingSpinner.style.display = 'block';
+
+            try {
+                const systemPrompt = "You are a professional copywriter for a non-profit animal rescue organization. Write a short, heartwarming success story based on the user's keywords. The tone should be hopeful and inspiring. Do not include a title.";
+                const userQuery = `Write a success story for an animal rescue based on these keywords: ${prompt}`;
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: [{ parts: [{ text: userQuery }] }],
+                    tools: [{ "google_search": {} }],
+                    systemInstruction: { parts: [{ text: systemPrompt }] },
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                const candidate = result.candidates?.[0];
+                let text = "Sorry, I couldn't generate a story for that. Please try different keywords.";
+
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    text = candidate.content.parts[0].text;
+                }
+
+                // Create and prepend new story card
+                const newStoryCard = document.createElement('div');
+                newStoryCard.classList.add('card', 'mb-4', 'p-4', 'shadow-sm', 'story-card');
+                newStoryCard.innerHTML = `<p class="card-text text-muted">"${text}"</p>
+                                          <button class="btn btn-sm btn-outline-primary mt-2 listen-btn" style="border-radius: 50px;"><i class="fas fa-volume-up"></i> Listen</button>
+                                          <audio style="display: none;"></audio>`;
+                storiesContainer.prepend(newStoryCard);
+
+            } catch (error) {
+                console.error("Error generating story:", error);
+                const errorMessage = document.createElement('div');
+                errorMessage.classList.add('alert', 'alert-danger');
+                errorMessage.textContent = 'An error occurred while generating the story. Please try again.';
+                storiesContainer.prepend(errorMessage);
+            } finally {
+                loadingSpinner.style.display = 'none';
+            }
+        });
+
+        // Gemini API integration for image generation
+        document.getElementById('generate-image-btn').addEventListener('click', async () => {
+            const prompt = document.getElementById('image-prompt').value;
+            const outputContainer = document.getElementById('image-output-container');
+            const outputImage = document.getElementById('generated-image');
+            const loadingSpinner = document.getElementById('image-loading-spinner');
+            
+            if (!prompt) {
+                outputContainer.innerHTML = `<p class="text-danger">Please enter a description for the image.</p>`;
+                return;
+            }
+            
+            // Show loading state
+            loadingSpinner.style.display = 'block';
+            outputImage.style.display = 'none';
+            outputContainer.innerHTML = `<p class="text-muted">Generating image...</p>`;
+            
+            try {
+                const payload = {
+                    instances: { prompt: prompt },
+                    parameters: { "sampleCount": 1 }
+                };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
+                
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                
+                if (result.predictions && result.predictions.length > 0 && result.predictions[0].bytesBase64Encoded) {
+                    const base64Data = result.predictions[0].bytesBase64Encoded;
+                    const imageUrl = `data:image/png;base64,${base64Data}`;
+                    
+                    outputImage.src = imageUrl;
+                    outputImage.style.display = 'block';
+                    outputContainer.innerHTML = '';
+                    outputContainer.appendChild(outputImage);
+                } else {
+                    outputContainer.innerHTML = `<p class="text-danger">Failed to generate image. Please try a different prompt.</p>`;
+                }
+            } catch (error) {
+                console.error("Error generating image:", error);
+                outputContainer.innerHTML = `<p class="text-danger">An error occurred while generating the image. Please try again.</p>`;
+            } finally {
+                loadingSpinner.style.display = 'none';
+            }
+        });
+
+        // Gemini API integration for text-to-speech
+        document.getElementById('success-stories').addEventListener('click', async (event) => {
+            if (event.target.classList.contains('listen-btn') || event.target.parentElement.classList.contains('listen-btn')) {
+                const button = event.target.closest('.listen-btn');
+                const storyCard = button.closest('.story-card');
+                const storyText = storyCard.querySelector('.card-text').textContent;
+                const audioPlayer = storyCard.querySelector('audio');
+
+                if (audioPlayer.paused) {
+                    button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...';
+                    button.disabled = true;
+
+                    try {
+                        const payload = {
+                            contents: [{
+                                parts: [{ text: storyText }]
+                            }],
+                            generationConfig: {
+                                responseModalities: ["AUDIO"],
+                                speechConfig: {
+                                    voiceConfig: {
+                                        prebuiltVoiceConfig: { voiceName: "Puck" }
+                                    }
+                                }
+                            },
+                            model: "gemini-2.5-flash-preview-tts"
+                        };
+                        const apiKey = "";
+                        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        
+                        const result = await response.json();
+                        const part = result?.candidates?.[0]?.content?.parts?.[0];
+                        const audioData = part?.inlineData?.data;
+                        const mimeType = part?.inlineData?.mimeType;
+                        const sampleRate = 16000; // The API returns 16kHz audio
+
+                        if (audioData && mimeType && mimeType.startsWith("audio/")) {
+                            const pcmData = new Int16Array(base64ToArrayBuffer(audioData));
+                            const wavBlob = pcmToWav(pcmData, sampleRate);
+                            const audioUrl = URL.createObjectURL(wavBlob);
+                            audioPlayer.src = audioUrl;
+                            audioPlayer.play();
+                            button.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                        } else {
+                            button.innerHTML = '<i class="fas fa-volume-up"></i> Listen';
+                            // Use a simple non-blocking message
+                            console.error('Error: TTS audio data not found in response.');
+                        }
+                    } catch (error) {
+                        console.error('Error playing audio:', error);
+                        button.innerHTML = '<i class="fas fa-volume-up"></i> Listen';
+                    } finally {
+                        button.disabled = false;
+                    }
+                } else {
+                    audioPlayer.pause();
+                    button.innerHTML = '<i class="fas fa-volume-up"></i> Listen';
+                }
+            }
+        });
+
+        // Gemini API integration for Mission Matcher
+        document.getElementById('match-btn').addEventListener('click', async () => {
+            const prompt = document.getElementById('interests-prompt').value;
+            const resultContainer = document.getElementById('match-result');
+            const resultText = document.getElementById('match-text');
+            const loadingSpinner = document.getElementById('matcher-loading-spinner');
+            
+            if (!prompt) {
+                resultContainer.style.display = 'block';
+                resultText.textContent = 'Please tell us about your interests to find your mission.';
+                return;
+            }
+
+            loadingSpinner.style.display = 'block';
+            resultContainer.style.display = 'none';
+
+            try {
+                const systemPrompt = "You are a helpful and encouraging volunteer coordinator for a non-profit animal rescue. Based on the user's interests, suggest a specific and actionable way they can help the organization. Be friendly and concise. Your response should be a single paragraph starting with 'Based on your interests, you'd be a great fit for...'";
+                const userQuery = `My interests are: ${prompt}`;
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: [{ parts: [{ text: userQuery }] }],
+                    systemInstruction: { parts: [{ text: systemPrompt }] },
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                const candidate = result.candidates?.[0];
+                let text = "We're having trouble finding a mission for you right now. Please try again or reach out to us directly!";
+
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    text = candidate.content.parts[0].text;
+                }
+                
+                resultText.textContent = text;
+                resultContainer.style.display = 'block';
+
+            } catch (error) {
+                console.error("Error with mission matcher:", error);
+                resultText.textContent = 'An error occurred while finding your mission. Please try again.';
+                resultContainer.style.display = 'block';
+            } finally {
+                loadingSpinner.style.display = 'none';
+            }
+        });
+        
+        // Gemini API integration for tagline translation
+        document.getElementById('translate-btn').addEventListener('click', async () => {
+            const selectElement = document.getElementById('language-select');
+            const targetLang = selectElement.value;
+            const taglineElement = document.getElementById('hero-tagline');
+            const translateSpinner = document.getElementById('translate-loading-spinner');
+            
+            const originalText = "Where there is hope, there is rescue";
+            const originalSanskrit = "यत्र आशा तत्र उद्धारः";
+
+            if (targetLang === 'en') {
+                taglineElement.textContent = `${originalSanskrit} — ${originalText}`;
+                return;
+            }
+            
+            translateSpinner.style.display = 'block';
+
+            try {
+                const systemPrompt = "You are a professional language translator. Translate the given English tagline into the specified language.";
+                const userQuery = `Translate the English phrase "${originalText}" into the language code "${targetLang}". Return only the translated phrase.`;
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: [{ parts: [{ text: userQuery }] }],
+                    systemInstruction: { parts: [{ text: systemPrompt }] },
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                const candidate = result.candidates?.[0];
+                let translatedText = "Translation failed.";
+
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    translatedText = candidate.content.parts[0].text;
+                }
+                
+                taglineElement.textContent = `${originalSanskrit} — ${translatedText}`;
+
+            } catch (error) {
+                console.error("Error with translation:", error);
+                taglineElement.textContent = "Translation failed.";
+            } finally {
+                translateSpinner.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
